@@ -1,4 +1,4 @@
-object PartialFunctions extends App {
+object PartialApplicationAndCurrying extends App {
 
   def add(x:Int,y:Int) = x + y
   println("adding two numbers 5 and 10: " + add(5,10))
