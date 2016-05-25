@@ -1,7 +1,5 @@
 package forcomprehensions
 
-import scala.collection.immutable.IndexedSeq
-
 object TryingForComprehension extends App {
   // Consider :
 
