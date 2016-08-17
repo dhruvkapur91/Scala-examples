@@ -27,4 +27,6 @@ apply plugin: 'scala'
 //noinspection GroovyAssignabilityCheck -- for intellij not vomitting out
 dependencies {
     compile group: 'org.scalacheck', name: 'scalacheck_2.11', version: '1.13.1'
+    compile group: 'org.scala-lang.modules', name: 'scala-parser-combinators_2.11', version: '1.0.2'
+
 }
