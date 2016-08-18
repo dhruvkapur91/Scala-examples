@@ -7,7 +7,7 @@ class RAMToyLanguageParser extends RegexParsers {
 
   def letter: Parser[String] = "[a-z]|[A-Z]".r
 
-  def variable: Parser[~[String, String]] = letter ~ (letter | digit)
+  def variable: Parser[~[String, List[String]]] = letter ~ rep(letter | digit)
 
   def parseDigit(text: String) = parseAll(digit, text)
 
@@ -26,6 +26,10 @@ object RAMToyLanguageParser extends App {
   }
 
   println {
-    s"Should match a variable ${new RAMToyLanguageParser().parseVariable("a1")} "
+    s"Should match a variable of 2 len char ${new RAMToyLanguageParser().parseVariable("a1")} "
+  }
+
+  println {
+    s"Should match a variable of arb len char ${new RAMToyLanguageParser().parseVariable("a1l343llsdsd2")} "
   }
 }
