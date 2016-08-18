@@ -5,9 +5,12 @@ import scala.util.parsing.combinator.RegexParsers
 class RAMToyLanguageParser extends RegexParsers {
   type digit = String
   type letter = String
+  type equals = String
+  type zero = String
   type letterOrDigit = String
   type lettersOrDigits = List[String]
   type variable = ~[letter,lettersOrDigits]
+  type check = ~[~[variable,equals],zero]
 
   def digit: Parser[digit] = "[0-9]".r
 
@@ -15,11 +18,15 @@ class RAMToyLanguageParser extends RegexParsers {
 
   def variable: Parser[variable] = letter ~ rep(letter | digit)
 
+  def check: Parser[check] = variable ~ "=" ~ "0"
+
   def parseDigit(text: String) = parseAll(digit, text)
 
   def parseLetter(text: String) = parseAll(letter, text)
 
   def parseVariable(text: String) = parseAll(variable, text)
+
+  def parseCheck(text: String) = parseAll(check, text)
 }
 
 object RAMToyLanguageParser extends App {
@@ -37,5 +44,12 @@ object RAMToyLanguageParser extends App {
 
   println {
     s"Should match a variable of arb len char ${new RAMToyLanguageParser().parseVariable("a1l343llsdsd2")} "
+  }
+
+  println {
+    s"Should match a check expression... ${new RAMToyLanguageParser().parseCheck(
+      """
+        |pqr123 = 0
+      """.stripMargin)} "
   }
 }
