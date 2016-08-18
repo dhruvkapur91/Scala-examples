@@ -7,12 +7,13 @@ class RAMToyLanguageParser extends RegexParsers {
   type letter = String
   type letterOrDigit = String
   type lettersOrDigits = List[String]
+  type variable = ~[letter,lettersOrDigits]
 
   def digit: Parser[digit] = "[0-9]".r
 
   def letter: Parser[letter] = "[a-z]|[A-Z]".r
 
-  def variable: Parser[~[letter, lettersOrDigits]] = letter ~ rep(letter | digit)
+  def variable: Parser[variable] = letter ~ rep(letter | digit)
 
   def parseDigit(text: String) = parseAll(digit, text)
 
