@@ -3,11 +3,16 @@ package parsercombinators
 import scala.util.parsing.combinator.RegexParsers
 
 class RAMToyLanguageParser extends RegexParsers {
-  def digit: Parser[String] = "[0-9]".r
+  type digit = String
+  type letter = String
+  type letterOrDigit = String
+  type lettersOrDigits = List[String]
 
-  def letter: Parser[String] = "[a-z]|[A-Z]".r
+  def digit: Parser[digit] = "[0-9]".r
 
-  def variable: Parser[~[String, List[String]]] = letter ~ rep(letter | digit)
+  def letter: Parser[letter] = "[a-z]|[A-Z]".r
+
+  def variable: Parser[~[letter, lettersOrDigits]] = letter ~ rep(letter | digit)
 
   def parseDigit(text: String) = parseAll(digit, text)
 
