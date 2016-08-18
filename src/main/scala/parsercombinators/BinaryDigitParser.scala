@@ -8,7 +8,7 @@ class BinaryDigitParser extends RegexParsers {
 
   def binaryNumber: Parser[~[String, List[String]]] = digit ~ rep(digit)
 
-  def parse(text: String) = parseAll(binaryNumber, text)
+  def parse(text: String): ParseResult[~[String, List[String]]] = parseAll(binaryNumber, text)
 }
 
 object Something extends App {
