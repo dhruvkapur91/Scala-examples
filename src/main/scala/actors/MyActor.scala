@@ -1,6 +1,6 @@
 package actors
 
-import akka.actor.Actor
+import akka.actor.{Actor, Props}
 import akka.event.Logging
 
 class MyActor extends Actor {
@@ -12,4 +12,8 @@ class MyActor extends Actor {
     case _ => log.info("Received some unknown message")
   }
 
+}
+
+object RunningActor extends App {
+  val props1 = Props[MyActor]
 }
