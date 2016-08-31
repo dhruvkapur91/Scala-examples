@@ -1,5 +1,7 @@
 package parsercombinators
 
+import java.io.Serializable
+
 import scala.util.parsing.combinator.RegexParsers
 
 class RAMToyLanguageParser extends RegexParsers {
@@ -9,8 +11,8 @@ class RAMToyLanguageParser extends RegexParsers {
   type zero = String
   type letterOrDigit = String
   type lettersOrDigits = List[String]
-  type variable = ~[letter,lettersOrDigits]
-  type check = ~[~[variable,equals],zero]
+  type variable = ~[letter, lettersOrDigits]
+  type check = ~[~[variable, equals], zero]
 
   def digit: Parser[digit] = "[0-9]".r
 
@@ -20,6 +22,22 @@ class RAMToyLanguageParser extends RegexParsers {
 
   def check: Parser[check] = variable ~ "=" ~ "0"
 
+  def outputCommand = "write" ~ variable
+
+  def inputCommand = "read" ~ variable
+
+  def assignmentCommand = variable ~ ("++" | "--")
+
+  def command: Parser[~[Serializable, Serializable]] = assignmentCommand | inputCommand | outputCommand | whileCommand | ifCommand | failure("unexpected symbol")
+
+  def commands = rep(command)
+
+  def ifCommand = "if" ~ check ~ "then" ~ commands ~ rep("else" ~ commands) ~ "end" // need a way to put optional else...
+
+  def whileCommand = "while" ~ check ~ "do" ~ commands ~ "end"
+
+  def program = commands
+
   def parseDigit(text: String) = parseAll(digit, text)
 
   def parseLetter(text: String) = parseAll(letter, text)
@@ -27,6 +45,14 @@ class RAMToyLanguageParser extends RegexParsers {
   def parseVariable(text: String) = parseAll(variable, text)
 
   def parseCheck(text: String) = parseAll(check, text)
+
+  def parseOutputCommand(text: String) = parseAll(outputCommand, text)
+
+  def parseInputCommand(text: String) = parseAll(inputCommand, text)
+
+  def parseWhile(text : String) = parseAll(whileCommand,text)
+
+  def parseProgram(text : String) = parseAll(program,text)
 }
 
 object RAMToyLanguageParser extends App {
@@ -47,9 +73,30 @@ object RAMToyLanguageParser extends App {
   }
 
   println {
-    s"Should match a check expression... ${new RAMToyLanguageParser().parseCheck(
-      """
-        |pqr123 = 0
-      """.stripMargin)} "
+    s"Should match a check expression... ${
+      new RAMToyLanguageParser().parseCheck(
+        """
+          |pqr123 = 0
+        """.stripMargin)
+    } "
+  }
+
+//  println {
+//    s"Lets try while... ${
+//      new RAMToyLanguageParser().parseWhile(
+//        """
+//          |while pqr123 = 0  do read abc end
+//        """.stripMargin
+//      )
+//    }"
+//  }
+
+  println {
+    s"Should parse the whole program... ${
+      new RAMToyLanguageParser().parseProgram(
+        """
+          |read x  read y
+        """.stripMargin)
+    }"
   }
 }
