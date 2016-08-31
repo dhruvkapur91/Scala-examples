@@ -20,7 +20,7 @@ object RecommendedActorWithEnumeratedClasses {
 }
 
 object RecommendedActorWithEnumeratedClassesRunner extends App {
-  val actorSystem = ActorSystem.create("NewActorSystem")
+  val actorSystem = ActorSystem("NewActorSystem")
   private val recommendedActor: ActorRef = actorSystem.actorOf(createRecommendedActor("YAYY!"))
   recommendedActor ! Greeting("YAYY!")
   recommendedActor ! "No YAYY!"
