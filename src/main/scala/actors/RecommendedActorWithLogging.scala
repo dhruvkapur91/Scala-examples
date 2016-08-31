@@ -2,7 +2,6 @@ package actors
 
 import actors.RecommendedActorWithActorLogging.createRecommendedActor
 import akka.actor.{Actor, ActorLogging, ActorRef, ActorSystem, Props}
-import akka.event.Logging
 
 class RecommendedActorWithActorLogging(greeting : String) extends Actor with ActorLogging {
 
