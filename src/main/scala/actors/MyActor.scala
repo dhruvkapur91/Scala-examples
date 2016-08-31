@@ -28,4 +28,5 @@ class MyActorWithArgs(message : String) extends Actor {
 object RunningActor extends App {
   val props1 = Props[MyActor]
   val props2 = Props(new MyActorWithArgs("Hello args")) // This is not recommended
+  val props3 = Props(classOf[MyActorWithArgs],"This is better!")
 }
