@@ -3,11 +3,17 @@ package actors.picalculation
 import actors.picalculation.Worker.Receiving.Work
 import akka.actor.{Actor, ActorLogging, ActorRef, ActorSystem, Props}
 
+import akka.pattern.ask
+import akka.util.Timeout
+import scala.concurrent.Await
+import scala.concurrent.duration._
+
+
 class Worker extends Actor with ActorLogging {
 
   override def receive: Receive = {
     case Work(startIndexOfComputation, numberOfElementsToCompute) =>
-      log.info("Starting work")
+      sender ! "Starting the work"
   }
 }
 
@@ -26,7 +32,10 @@ object Worker {
 object PiCalculatorRunner extends App {
   val system: ActorSystem = ActorSystem("PiCalculatorActor")
   private val worker: ActorRef = system.actorOf(Props[Worker])
-  worker ! Work(1, 1)
-  Thread.sleep(1000)
+
+  implicit val timeout = Timeout(5 seconds)
+  private val future = worker ? Work(1,1)
+  println(Await.result(future, timeout.duration).asInstanceOf[String])
+
   system.terminate()
 }
