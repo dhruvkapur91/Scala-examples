@@ -1,12 +1,8 @@
 package actors.picalculation
 
+import actors.picalculation.Master.Receiving.Calculate
 import actors.picalculation.Worker.Receiving.Work
 import akka.actor.{Actor, ActorLogging, ActorRef, ActorSystem, Props}
-
-import akka.pattern.ask
-import akka.util.Timeout
-import scala.concurrent.Await
-import scala.concurrent.duration._
 
 
 class Worker extends Actor with ActorLogging {
@@ -29,13 +25,30 @@ object Worker {
 
 }
 
+class Master extends Actor with ActorLogging {
+
+  val worker = context.actorOf(Props[Worker],"Worker")
+
+  override def receive: Receive = {
+    case Calculate => worker ! Work(1,1)
+    case x : Any => println(s"Received some message $x from sender $sender")
+  }
+}
+
+object Master {
+  sealed trait ValidMessages
+
+  object Receiving {
+    case object Calculate extends ValidMessages
+  }
+}
+
 object PiCalculatorRunner extends App {
   val system: ActorSystem = ActorSystem("PiCalculatorActor")
-  private val worker: ActorRef = system.actorOf(Props[Worker])
+  private val master: ActorRef = system.actorOf(Props[Master],"Master")
 
-  implicit val timeout = Timeout(5 seconds)
-  private val future = worker ? Work(1,1)
-  println(Await.result(future, timeout.duration).asInstanceOf[String])
+  master ! Calculate
 
+  Thread.sleep(1000)
   system.terminate()
 }
