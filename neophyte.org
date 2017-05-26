@@ -1,0 +1,9 @@
+1) Extractors
+   - Opposite of constructors... While the latter creates an object from a given list of parameters, an extractor extracts the parameters from which an object passed to it was created.
+   - Extractors signature:
+     + def unapply(object : S) : Option[T] ... i.e. it takes an object of type S and returns an option where T is usually a tuple of parameters...
+   - Scala calls an extractor's unapply method if the extractor is used as an extractor pattern.
+   
+   - People say pattern matching is not just a glorified switch statement but rather both a control and a binding construct...
+   - The point is, when pattern matching is available, you should use it in preference to writing your own control constructs (e.g. if-then-else) or your own code to select portions of the data (e.g. accessing .Head), because the pattern-matching language syntax and type system are designed to constrain the ways you can write code so that it is much harder to make errors.
+2) 

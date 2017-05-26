@@ -1,0 +1,7 @@
+Interesting scala features:
+1. Partial application, currying : Functions with some arugments bound.
+2. Partial Functions: Function with limited domain.
+
+
+definately a great resource : http://danielwestheide.com/scala/neophytes.html
+

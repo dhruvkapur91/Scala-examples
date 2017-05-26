@@ -59,5 +59,5 @@ object PiCalculatorRunner extends App {
   println(Await.result(future,timeout.duration).asInstanceOf[String])
 
   Thread.sleep(1000)
-  system.terminate()
+//  system.terminate()
 }

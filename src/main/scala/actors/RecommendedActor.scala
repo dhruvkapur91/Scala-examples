@@ -23,5 +23,5 @@ object Runner extends App {
   private val recommendedActor: ActorRef = actorSystem.actorOf(createRecommendedActor("YAYY!"))
   recommendedActor ! "YAYY!"
   recommendedActor ! "No YAYY!"
-  actorSystem.terminate()
+//  actorSystem.terminate()
 }

@@ -6,7 +6,7 @@ import scala.util.parsing.combinator.RegexParsers
 class BinaryDigitParser extends RegexParsers {
   def digit: Parser[String] = "0" | "1"
 
-  def binaryNumber: Parser[~[String, List[String]]] = digit ~ rep(digit)
+  def binaryNumber = digit <~ rep(digit) ^^ { case x => 1}
 
   def parse(text: String): ParseResult[~[String, List[String]]] = parseAll(binaryNumber, text)
 }

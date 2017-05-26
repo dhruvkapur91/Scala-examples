@@ -25,5 +25,5 @@ object RecommendedActorWithEnumeratedClassesRunner extends App {
   recommendedActor ! Greeting("YAYY!")
   recommendedActor ! "No YAYY!"
   recommendedActor ! GoodBye
-  actorSystem.terminate()
+//  actorSystem.terminate()
 }
